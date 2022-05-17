@@ -20,6 +20,7 @@ export interface PayStackProps {
   amount: string | number;
   currency?: Currency;
   channels?: PaymentChannels[];
+  planCode : string;
   refNumber?: string;
   billingName?: string;
   handleWebViewMessage?: (string: string) => void;

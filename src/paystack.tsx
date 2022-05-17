@@ -17,6 +17,7 @@ const Paystack: React.ForwardRefRenderFunction<React.ReactNode, PayStackProps> =
     amount = '0.00',
     currency = 'NGN',
     channels = ['card'],
+    planCode,
     refNumber,
     billingName,
     handleWebViewMessage,
@@ -51,6 +52,8 @@ const Paystack: React.ForwardRefRenderFunction<React.ReactNode, PayStackProps> =
   };
 
   const refNumberString = refNumber ? `ref: '${refNumber}',` : ''; // should only send ref number if present, else if blank, paystack will auto-generate one
+  
+  const paystackPlan = planCode ? `plan : '${planCode}',` : ""; // Should only set paystack plan if present
 
   const Paystackcontent = `   
       <!DOCTYPE html>
@@ -74,6 +77,7 @@ const Paystack: React.ForwardRefRenderFunction<React.ReactNode, PayStackProps> =
                 phone: '${phone}',
                 amount: ${getAmountValueInKobo(amount)}, 
                 currency: '${currency}',
+                ${paystackPlan}
                 ${getChannels(channels)}
                 ${refNumberString}
                 metadata: {

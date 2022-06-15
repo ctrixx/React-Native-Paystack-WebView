@@ -18,6 +18,7 @@ const Paystack: React.ForwardRefRenderFunction<React.ReactNode, PayStackProps> =
     currency = 'NGN',
     channels = ['card'],
     planCode,
+    metaData = {},
     refNumber,
     billingName,
     handleWebViewMessage,
@@ -80,14 +81,18 @@ const Paystack: React.ForwardRefRenderFunction<React.ReactNode, PayStackProps> =
                 ${paystackPlan}
                 ${getChannels(channels)}
                 ${refNumberString}
-                metadata: {
-                custom_fields: [
-                        {
-                        display_name:  '${firstName + ' ' + lastName}',
-                        variable_name:  '${billingName}',
+                metadata : ${
+                  {
+                    ...metaData,
+                    custom_fields: [
+                      {
+                        display_name:  firstName + ' ' + lastName,
+                        variable_name:  billingName,
                         value:''
-                        }
-                ]},
+                      }
+                    ]
+                  }
+                },
                 callback: function(response){
                       var resp = {event:'successful', transactionRef:response};
                         window.ReactNativeWebView.postMessage(JSON.stringify(resp))

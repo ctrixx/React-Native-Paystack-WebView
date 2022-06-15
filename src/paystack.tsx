@@ -18,7 +18,7 @@ const Paystack: React.ForwardRefRenderFunction<React.ReactNode, PayStackProps> =
     currency = 'NGN',
     channels = ['card'],
     planCode,
-    metaData = {},
+    metaData,
     refNumber,
     billingName,
     handleWebViewMessage,
@@ -57,10 +57,14 @@ const Paystack: React.ForwardRefRenderFunction<React.ReactNode, PayStackProps> =
   const paystackPlan = planCode ? `plan : '${planCode}',` : ""; // Should only set paystack plan if present
 
   const parseMetaData = () => {
+    if(!metaData){
+      return ``;
+    }
     var customMetaData = ``;
     var keys = Object.keys(metaData);
     keys.forEach((field)=>{
-        customMetaData+= `${field} : '${metaData[field]}',\n`;
+        var value = metaData[field];
+        customMetaData+= `${field} : '${value}',\n`;
     })
     return customMetaData;
   

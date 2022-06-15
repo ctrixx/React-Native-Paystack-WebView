@@ -56,6 +56,15 @@ const Paystack: React.ForwardRefRenderFunction<React.ReactNode, PayStackProps> =
   
   const paystackPlan = planCode ? `plan : '${planCode}',` : ""; // Should only set paystack plan if present
 
+  const parseMetaData = () => {
+    var customMetaData = ``;
+    var keys = Object.keys(metaData);
+    keys.forEach((field)=>{
+        customMetaData+= `${field} : '${metaData[field]}',\n`;
+    })
+    return customMetaData;
+  
+  }
   const Paystackcontent = `   
       <!DOCTYPE html>
       <html lang="en">
@@ -81,18 +90,15 @@ const Paystack: React.ForwardRefRenderFunction<React.ReactNode, PayStackProps> =
                 ${paystackPlan}
                 ${getChannels(channels)}
                 ${refNumberString}
-                metadata : ${
-                  {
-                    ...metaData,
-                    custom_fields: [
-                      {
-                        display_name:  firstName + ' ' + lastName,
-                        variable_name:  billingName,
-                        value:''
-                      }
-                    ]
-                  }
-                },
+                metadata: {
+                  ${parseMetaData()}
+                  custom_fields: [
+                          {
+                          display_name:  '${firstName + ' ' + lastName}',
+                          variable_name:  '${billingName}',
+                          value:''
+                          }
+                  ]},
                 callback: function(response){
                       var resp = {event:'successful', transactionRef:response};
                         window.ReactNativeWebView.postMessage(JSON.stringify(resp))
